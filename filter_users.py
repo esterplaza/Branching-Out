@@ -32,7 +32,7 @@ def filter_users_by_name(name):
         print(user)
 
 
-def main():
+def get_users_choice():
     filter_option = (
         input(
             "What would you like to filter by? (Valid input: 'name', "
@@ -41,18 +41,26 @@ def main():
         .strip()
         .lower()
     )
+    return filter_option
 
-    if filter_option == "name":
-        name_to_search = input("Enter a name to filter users: ").strip()
-        filter_users_by_name(name_to_search)
-    elif filter_option == "age":
-        age_to_search = input("Enter an age to filter users: ").strip()
-        filter_users_by_age(age_to_search)
-    elif filter_option == "email":
-        email_to_search = input("Enter an email to filter users: ").strip()
-        filter_users_by_email(email_to_search)
+
+FILTER_ACTIONS = {
+    "name": filter_users_by_name,
+    "age": filter_users_by_age,
+    "email": filter_users_by_email,
+}
+
+
+def main():
+    users_filter_option = get_users_choice()
+    if users_filter_option in FILTER_ACTIONS:
+        action = FILTER_ACTIONS.get(users_filter_option)
+        item_to_search = input(
+            f"Enter {users_filter_option} to filter users: " f""
+        ).strip()
+        action(item_to_search)
     else:
-        print("Filtering by that option is not yet supported.")
+        print("Filtering by that option is not supported.")
 
 
 if __name__ == "__main__":
